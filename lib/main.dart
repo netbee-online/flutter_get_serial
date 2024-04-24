@@ -68,12 +68,12 @@ class _MyHomePageState extends State<MyHomePage> {
     try {
       final result = await Process.run('sh', [
         '-c',
-        'getprop | grep -i ro.serialno | cut -d \']\' -f 2 | cut -d \'[\' -f 2'
+        "ifconfig | grep wlan0 | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}'"
       ]);
 
       if (result.exitCode == 0) {
         setState(() {
-          serial = result.stdout.trim();
+          serial = result.stdout.trim().replaceAll(":", "");
         });
       } else {
         setState(() {
